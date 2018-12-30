@@ -83,27 +83,23 @@ Sales_data add(const Sales_data &lhs, const Sales_data &rhs)
 
 int main()
 {
-	Sales_data total(cin);	// 保存下一条交易记录的变量
-	// 读入第一条交易记录，并确保有数据可以处理
-	if (cin) {
-		// 读入并处理剩余交易记录
-		while (true) {
-			Sales_data trans(cin);	// 保存和的变量
-			if (!cin) break;
+    Sales_data total(std::cin);
+    if (!total.isbn().empty()) {
+        std::istream& is = std::cin;
+        while (is) {
+            Sales_data trans(is);
+            if (total.isbn() == trans.isbn())
+                total.combine(trans);
+            else {
+                print(std::cout, total) << std::endl;
+                total = trans;
+            }
+        }
+    }
+    else {
+        std::cerr << "No data?!" << std::endl;
+        return -1;
+    }
 
-			if (total.isbn() == trans.isbn()) {
-				total.combine(trans);
-			}
-			else {
-				print(cout, total) << endl;	// 输出结果
-				total = trans;		// 处理下一本书
-			}
-		}
-		print(cout, total) << endl;	// 输出最后一条交易
-	}
-	else {
-		cerr << "No data?!" << endl;
-	}
-
-	return 0;
+    return 0;
 }
